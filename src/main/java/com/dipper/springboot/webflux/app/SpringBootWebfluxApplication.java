@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
@@ -18,12 +19,16 @@ public class SpringBootWebfluxApplication implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootWebfluxApplication.class);
 
+    @Autowired
+    private ReactiveMongoTemplate mongoTemplate;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringBootWebfluxApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        mongoTemplate.dropCollection("productos").subscribe();
         Flux.just(new Producto("Medical Dental Instruments", 204.31)
                 , new Producto("Telecommunications Equipment", 139.81)
                 , new Producto("Investment Managers", 249.51)
